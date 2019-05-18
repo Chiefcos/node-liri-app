@@ -1,0 +1,27 @@
+{
+  "name": "node-liri-app",
+  "version": "1.0.0",
+  "description": "an application that uses Bands in Town, OMDB and Spotify API's",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chiefcos/node-liri-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Chiefcos/node-liri-app/issues"
+  },
+  "homepage": "https://github.com/Chiefcos/node-liri-app#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "dotenv": "^8.0.0",
+    "inquirer": "^6.3.1",
+    "moment": "^2.24.0",
+    "node-spotify-api": "^1.1.1"
+  }
+}
