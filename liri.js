@@ -19,18 +19,25 @@ function searchCheck() {
   var input = process.argv.slice(2);
   var check = input.shift();
   if (check.indexOf(movieCheck) !== -1) {
+    input = input.join(" ");
     imdb(input);
   } else if (check.indexOf(bandsInTownCheck) !== -1) {
+    input = input.join(" ");
     bandsInTown(input);
   } else if (check.indexOf(spotifyCheck) !== -1) {
+    input = input.join(" ");
     spotifySearch(input);
   } else if (check.indexOf(fsCheck) !== -1) {
+    input = input.join(" ");
     fsSearch(input);
   }
 }
 
 //  This is the IMDB function that will run a search based on user input
 function imdb(input) {
+  if (input.length === 0) {
+    input = "Mr. Nobody";
+  }
   // We run the API search
   axios
     .get("http://www.omdbapi.com/?t=" + input + "&apikey=trilogy")
@@ -46,14 +53,14 @@ function imdb(input) {
         Actors: actors
       } = response.data;
 
-      var rottenTomatoes = response.data.Ratings[1].Value;
+      // var rottenTomatoes = response.data.Ratings[1].Value;
 
       // We display the data on the terminal
       console.log("===============================");
       console.log("Movie Title: " + title);
       console.log("Year: " + year);
       console.log("IMDB Rating: " + imdbRating);
-      console.log("Rotten Tomatoes: " + rottenTomatoes);
+      // console.log("Rotten Tomatoes: " + rottenTomatoes);
       console.log("Country: " + country);
       console.log("Language: " + language);
       console.log("Plot: " + plot);
@@ -68,6 +75,9 @@ function imdb(input) {
 
 // This is the Bands in Town function to display user input
 function bandsInTown(input) {
+  if (input.length === 0) {
+    input = "Metallica";
+  }
   // We run the search on Bands in Town
   axios
     .get(
@@ -84,6 +94,7 @@ function bandsInTown(input) {
 
         // We display the information on the terminal
         console.log("===============================");
+        console.log("Artist: " + res.data[0].lineup[0]);
         console.log("Venue: " + res.data[i].venue.name);
         console.log("Location: " + res.data[i].venue.city);
         console.log("Country: " + res.data[i].venue.country);
@@ -99,8 +110,15 @@ function bandsInTown(input) {
 
 // This is the spotify function which runs a search through spotify on user input
 function spotifySearch(input) {
+  // Check if input is not empty and set a default
+  if (input.length === 0) {
+    input = "the sign Ace of base";
+  }
   // We run the spotify search
-  spotify.search({ type: "track", query: input }, function(err, data) {
+  spotify.search({ type: "track", query: input, limit: 4 }, function(
+    err,
+    data
+  ) {
     if (err) {
       return console.log("Error occurred: " + err);
     }
@@ -112,6 +130,7 @@ function spotifySearch(input) {
       console.log("Title: " + data.tracks.items[j].name);
       console.log("Artist: " + data.tracks.items[j].artists[0].name);
       console.log("Album Name: " + data.tracks.items[j].album.name);
+      console.log("Preview: " + data.tracks.items[j].preview_url);
       console.log("=============================== \n");
     }
   });
@@ -119,12 +138,13 @@ function spotifySearch(input) {
 // This function reads and writes to a document
 function fsSearch(input) {
   // If there is any user input we initialize the writting function
-  writtenResponse(input);
+  if (input.length !== 0) {
+    writtenResponse(input);
+  }
   // We read the document and check which of the functions we should run
 
   // this is the writting function
   function writtenResponse(input) {
-    input = input.join(" ");
     // and writes it to the document
     fs.writeFile("random.txt", input, function(err) {
       if (err) {
